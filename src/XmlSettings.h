@@ -1,6 +1,6 @@
 /*
  *  XmlSettings.h
- *  CindeXmlSettings
+ *  XmlSettings
  *
  *  Created by Andrea Cuius on 26/11/2011.
  *  Nocte Studio Copyright 2011 . All rights reserved.

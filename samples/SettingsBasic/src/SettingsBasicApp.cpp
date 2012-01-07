@@ -1,6 +1,6 @@
 /*
  *  SettingsBasicApp.cpp
- *  CindeXmlSettings
+ *  XmlSettings
  *
  *  Created by Andrea Cuius on 26/11/2011.
  *  Nocte Studio Copyright 2011 . All rights reserved.
@@ -23,8 +23,7 @@ using namespace std;
 class SettingsBasicApp : public AppBasic {
   public:
 	void setup();
-	void mouseDown( MouseEvent event );	
-	void update();
+	void keyDown( KeyEvent event );
 	void draw();
 	
 	
@@ -46,13 +45,10 @@ class SettingsBasicApp : public AppBasic {
 
 void SettingsBasicApp::setup()
 {
-	
-//	mSettings = new XmlSettings( loadResource(RES_SETTINGS) );
-
-	mSettings = new nocte::XmlSettings();
+	mSettings = new nocte::XmlSettings();							// create a new instance, at this point XmlSettings doesn't have any file associated
 	
 //	mSettings->addParam( "mTestInt32",	&mTestInt32 );
-	mSettings->addParam( "mTestFloat",	&mTestFloat );
+	mSettings->addParam( "mTestFloat",	&mTestFloat );				// add a new variable to the XmlSettings
 	mSettings->addParam( "mTestDouble",	&mTestDouble );
 	mSettings->addParam( "mTestBool",	&mTestBool );
 	mSettings->addParam( "mTestVec2f",	&mTestVec2f );
@@ -71,24 +67,38 @@ void SettingsBasicApp::setup()
 	mTestColorA = ColorA::black();
 	mTestString = "zero";
 	
-
-	mSettings->load("/Users/Q/Code/Cinder/blocks/XmlSettings/samples/SettingsBasic/xcode/build/Debug/appSettings.xml");
+	string filename = getOpenFilePath().generic_string();
 	
-	mSettings->addParam( "mTestInt32",	&mTestInt32 );	
+	if ( filename != "" )
+		mSettings->load(filename);									// load the xml settings file, this method override all the current values in XmlSettings
+	
+	mSettings->addParam( "mTestInt32",	&mTestInt32 );				// if mTestInt32 has been loaded already from the xml file ( load() ), but not added yet, addParam() just replace the pointer
 	mTestInt32	= 333;
 	
 	
 	console() << mSettings->getValueByName<ColorA>("mTestColorA") << endl;
 }
 
-void SettingsBasicApp::mouseDown( MouseEvent event )
+
+void SettingsBasicApp::keyDown( KeyEvent event )
 {
-	mSettings->save();
+	char c = event.getChar();
+	
+	if ( c == 'l' )													// Load a new xml settings file
+	{
+		string filename = getOpenFilePath().generic_string();
+		if ( filename != "" )
+			mSettings->load(filename);
+	}
+	
+	else if ( c == 'r' )											// Reload the current xml settings file, if none has been loaded, it doesn't do anything
+		mSettings->load();
+	
+	else if ( c == 's' )											// Save the current settings to the app root folder, the default filename is appSettings.xml, you can also specify another one
+		mSettings->save();
+		
 }
 
-void SettingsBasicApp::update()
-{
-}
 
 void SettingsBasicApp::draw()
 {
