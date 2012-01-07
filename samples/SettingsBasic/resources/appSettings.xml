@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings>	
+	<!-- App settings -->
+	<Vec2f	name="resolution" 			x="1706" y="960" />
+	
+	<int 	name="testInt"		 		value="0" />
+	
+</settings>
