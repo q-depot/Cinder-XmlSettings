@@ -23,6 +23,8 @@
 
 namespace nocte { 
 	
+    typedef std::shared_ptr<class XmlSettings>          XmlSettingsRef;
+    
 	static const std::string typeString[10] = { 
 		"int", 
 		"float", 
@@ -55,7 +57,7 @@ namespace nocte {
 			PARAM_FONT,
 			PARAM_STRING
 		};
-		
+
 		Param(const std::string &name, void *param, ParamType ptype) { mName = name; mParam = param; mType = ptype; };
 		
 		template <class T>
@@ -87,9 +89,11 @@ namespace nocte {
 			else if ( mType == PARAM_COLORA )
 				return ci::toString(*static_cast<ci::ColorA*>(mParam));
 			else if ( mType == PARAM_FONT )
-				return "TODO !!!!";//ci::toString(*static_cast<ci::ColorA*>(mParam));
+				return "TODO !!!!";//toString(*static_cast<ColorA*>(mParam));
 			else if ( mType == PARAM_STRING )
 				return *static_cast<std::string*>(mParam);
+            
+            return "";
 		};
 
 		
@@ -145,7 +149,7 @@ namespace nocte {
 		
 	protected:
 		
-		std::string	mName;
+        std::string	mName;
 		void		*mParam;
 		ParamType	mType;
 
@@ -156,107 +160,15 @@ namespace nocte {
 		
 	public:
 		
-		XmlSettings() { mFilename = ""; };
-
+		XmlSettings();
+        
+		~XmlSettings() {}
+        
+		void parseNode( ci::XmlTree node );
 		
-		void parseNode( ci::XmlTree node )
-		{
-			
-			std::string tag		= node.getTag();
-			std::string name	= node.getAttributeValue<std::string>("name");
-			bool paramFound		= false;
-			
-			for( int k=0; k < mParams.size(); k++)
-			{				
-				if ( mParams[k]->getName() == name )
-				{
-					paramFound = true;
-					
-					if ( tag == "int" )
-						mParams[k]->setValue<int>( node.getAttributeValue<int>("value") );
-					
-					else if ( tag == "float" )
-						mParams[k]->setValue<float>( node.getAttributeValue<float>("value") );
-
-					else if ( tag == "double" )
-						mParams[k]->setValue<double>( node.getAttributeValue<double>("value") );
-
-					else if ( tag == "Vec2f" )
-						mParams[k]->setValue<ci::Vec2f>( ci::Vec2f( node.getAttributeValue<float>("x"), node.getAttributeValue<float>("y") ) );
-					
-					else if ( tag == "Vec3f" )
-						mParams[k]->setValue<ci::Vec3f>( ci::Vec3f( node.getAttributeValue<float>("x"), node.getAttributeValue<float>("y"), node.getAttributeValue<float>("z") ) );
-					
-					else if ( tag == "bool" )
-						mParams[k]->setValue<bool>( node.getAttributeValue<bool>("value") );
-					
-					else if ( tag == "Color" )
-						mParams[k]->setValue<ci::Color>( ci::Color( node.getAttributeValue<float>("r"), node.getAttributeValue<float>("g"), node.getAttributeValue<float>("b") ) );
-					
-					else if ( tag == "ColorA" )
-						mParams[k]->setValue<ci::ColorA>( ci::ColorA( node.getAttributeValue<float>("r"), node.getAttributeValue<float>("g"), node.getAttributeValue<float>("b"), node.getAttributeValue<float>("a") ) );
-					
-					else if ( tag == "Font" )
-						mParams[k]->setValue<ci::Font>( ci::Font( node.getAttributeValue<std::string>("typeface"), node.getAttributeValue<int>("size") ) );
-					
-					else if ( tag == "string" )
-						mParams[k]->setValue<std::string>( node.getAttributeValue<std::string>("value") );
-				} 
-			}
-			
-			if ( !paramFound )
-			{
-				if ( tag == "int" )
-					addParam( name, new int(node.getAttributeValue<int>("value")) );
-				else if ( tag == "float" )
-					addParam( name, new float(node.getAttributeValue<float>("value")) );
-				
-				else if ( tag == "double" )
-					addParam( name, new double(node.getAttributeValue<double>("value")) );
-				
-				else if ( tag == "Vec2f" )
-					addParam( name, new ci::Vec2f( node.getAttributeValue<float>("x"), node.getAttributeValue<float>("y") ) );
-				
-				else if ( tag == "Vec3f" )
-					addParam( name, new ci::Vec3f( node.getAttributeValue<float>("x"), node.getAttributeValue<float>("y"), node.getAttributeValue<float>("z") ) );
-				
-				else if ( tag == "bool" )
-					addParam( name, new bool(node.getAttributeValue<bool>("value")) );
-				
-				else if ( tag == "Color" )
-					addParam( name, new ci::Color( node.getAttributeValue<float>("r"), node.getAttributeValue<float>("g"), node.getAttributeValue<float>("b") ) );
-				
-				else if ( tag == "ColorA" )
-					addParam( name, new ci::ColorA( node.getAttributeValue<float>("r"), node.getAttributeValue<float>("g"), node.getAttributeValue<float>("b"), node.getAttributeValue<float>("a") ) );
-				
-				else if ( tag == "Font" )
-					addParam( name, new ci::Font( node.getAttributeValue<std::string>("typeface"), node.getAttributeValue<int>("size") ) );
-				
-				else if ( tag == "string" )
-					addParam( name, new std::string(node.getAttributeValue<std::string>("value")) );
-			}
-		};
+		bool hasParam( std::string name );
 		
-		
-		bool hasParam(std::string name) 
-		{
-			for( int k=0; k < mParams.size(); k++)
-				if ( mParams[k]->getName() == name )
-					return true;
-			
-			return false;
-		};
-		
-		
-		Param* getParam(std::string name) 
-		{
-			for( int k=0; k < mParams.size(); k++)
-				if ( mParams[k]->getName() == name )
-					return mParams[k];
-			
-			return NULL;
-		};
-		
+		Param* getParam( std::string name );
 		
 		void	addParam( const std::string &name, int *param )			{ addOrBind(name, param, Param::PARAM_INT); };
 		void	addParam( const std::string &name, float *param )		{ addOrBind(name, param, Param::PARAM_FLOAT); };
@@ -264,14 +176,14 @@ namespace nocte {
 		void	addParam( const std::string &name, bool *param )		{ addOrBind(name, param, Param::PARAM_BOOL); };
 		void	addParam( const std::string &name, ci::Vec2f *param )	{ addOrBind(name, param, Param::PARAM_VEC2F); };
 		void	addParam( const std::string &name, ci::Vec3f *param )	{ addOrBind(name, param, Param::PARAM_VEC3F); };
-		void	addParam( const std::string &name, ci::Color *param )	{ addOrBind(name, param, Param::PARAM_COLOR); };	
-		void	addParam( const std::string &name, ci::ColorA *param )	{ addOrBind(name, param, Param::PARAM_COLORA); };	
+		void	addParam( const std::string &name, ci::Color *param )	{ addOrBind(name, param, Param::PARAM_COLOR); };
+		void	addParam( const std::string &name, ci::ColorA *param )	{ addOrBind(name, param, Param::PARAM_COLORA); };
 		void	addParam( const std::string &name, ci::Font *param )	{ addOrBind(name, param, Param::PARAM_FONT); };
 		void	addParam( const std::string &name, std::string *param )	{ addOrBind(name, param, Param::PARAM_STRING); };
 
 		
 		template <class T>
-		T		getValueByName( const std::string &name ) 
+		T		getValueByName( const std::string &name )
 		{ 
 			Param *p = getParam(name);
 			
@@ -284,88 +196,33 @@ namespace nocte {
 			return *static_cast<T*>( p->mParam ); 
 		};
 		
-		void drawDebug()
-		{		
-			ci::TextLayout textLayout = ci::TextLayout();
-			textLayout.setColor( ci::Color::white() );
-			textLayout.clear( ci::Color::black() );
-			textLayout.setBorder(10, 10);
-			textLayout.setLeadingOffset(3);
-			textLayout.setFont( ci::Font("Arial", 12) );
-			
-			textLayout.addLine( "XML SETTINGS" );
-			textLayout.addLine( " " );
-			
-			for( int k=0; k < mParams.size(); k++)
-				textLayout.addLine( mParams[k]->getType() + " \t" + mParams[k]->getName() + " \t" + mParams[k]->getAsString() );
-			
-			ci::gl::Texture tex = ci::gl::Texture(textLayout.render(true));
-			ci::gl::draw(tex);
-		};
-		
+		void drawDebug();
 
-		void load( std::string filename = "" ) 
-		{
-			
-			if ( filename != "" )
-				mFilename = filename;
-			
-			if ( mFilename == "" )
-			{
-				ci::app::console() << "cannot load XML settings, specify filename" << std::endl;
-				return;
-			}
-			
-			try {
-				mXmlAsset = ci::XmlTree( ci::loadFile(mFilename) );
-			}
-			catch ( ... ) {
-				ci::app::console() << "failed to load XML settings file: " << mFilename << std::endl;
-				return;
-			}
-			
-			std::list<ci::XmlTree> settings = mXmlAsset.getChild("/settings").getChildren();
-			
-			for(std::list<ci::XmlTree>::iterator nodeIt = settings.begin(); nodeIt != settings.end(); ++nodeIt)
-				parseNode( *nodeIt );
-
-			ci::app::console() << "XML settings loaded from: " << mFilename << std::endl;
-		};
+		void load( std::string filename = "" );
 		
-		
-		void save( std::string filename = "" )
-		{	
-			if ( filename == "" )
-				filename = ci::app::getAppPath().parent_path().generic_string() + "/appSettings.xml";
-			
-			mFilename = filename;
-			
-			mXmlAsset = ci::XmlTree("settings", "");
-			
-			for(int k=0; k < mParams.size(); k++)
-				mXmlAsset.push_back( mParams[k]->getXmlNode() );
-			
-			mXmlAsset.write( ci::writeFile( mFilename ) );
-			
-			ci::app::console() << "XML settings saved: " << mFilename << std::endl;
-			
-		};
+		void save( std::string filename = "" );
 		
 	private:
 		
-		void	addOrBind( const std::string &name, void *param, Param::ParamType ptype )
-		{
-			Param *p = getParam(name);
-			if ( p )
-				p->mParam = param;
-			else
-				mParams.push_back( new Param( name, param, ptype ) );
-		}
-		
+		void addOrBind( const std::string &name, void *param, Param::ParamType ptype );
+        
+        
+    private:
+        
 		std::string					mFilename;
 		std::vector<Param*>			mParams;
-		ci::XmlTree					mXmlAsset;
+        ci::XmlTree					mXmlAsset;
 		std::vector<ci::XmlTree>	mXmlNodes;
+        
+
+    public:
+
+        static XmlSettings*         getPtr() { return thisPtr; }
+
+    private:
+
+        static  XmlSettings*       thisPtr;
+        
 	};
 
 }
