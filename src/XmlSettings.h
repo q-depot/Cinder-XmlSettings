@@ -1,6 +1,5 @@
 /*
  *  XmlSettings.h
- *  XmlSettings
  *
  *  Created by Andrea Cuius on 26/11/2011.
  *  Nocte Studio Copyright 2011 . All rights reserved.
@@ -161,7 +160,7 @@ namespace nocte {
 		
 	public:
 		
-		XmlSettings();
+        static XmlSettingsRef create( ci::fs::path filePath = ci::fs::path("") ) { return XmlSettingsRef( new XmlSettings( filePath ) ); }
         
 		~XmlSettings() {}
         
@@ -199,18 +198,20 @@ namespace nocte {
 		
 		void drawDebug();
 
-		void load( std::string filename = "" );
+		void load( ci::fs::path filePath = ci::fs::path("") );
 		
-		void save( std::string filename = "" );
+		void save( ci::fs::path filePath );
 		
 	private:
 		
+		XmlSettings( ci::fs::path filePath );
+        
 		void addOrBind( const std::string &name, void *param, Param::ParamType ptype );
         
         
     private:
         
-		std::string					mFilename;
+		ci::fs::path                mFilePath;
 		std::vector<Param*>			mParams;
         ci::XmlTree					mXmlAsset;
 		std::vector<ci::XmlTree>	mXmlNodes;

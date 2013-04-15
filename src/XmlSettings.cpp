@@ -23,9 +23,9 @@ nocte::XmlSettings*      nocte::XmlSettings::thisPtr;    // would be better to u
 
 namespace nocte {
     
-    XmlSettings::XmlSettings()
+    XmlSettings::XmlSettings( ci::fs::path filePath )
     {
-        mFilename               = "";
+        mFilePath               = filePath;
         XmlSettings::thisPtr    = this;
     };
 
@@ -149,50 +149,41 @@ namespace nocte {
     };
     
 
-    void XmlSettings::load( string filename ) 
+    void XmlSettings::load( fs::path filePath )
     {
+        mFilePath = filePath;
         
-        if ( filename != "" )
-            mFilename = filename;
-        
-        if ( mFilename == "" )
+        if ( mFilePath.empty() )
         {
             app::console() << "cannot load XML settings, specify filename" << endl;
             return;
         }
         
         try {
-            mXmlAsset = XmlTree( loadFile(mFilename) );
+            mXmlAsset = XmlTree( loadFile( mFilePath ) );
         }
         catch ( ... ) {
-            app::console() << "failed to load XML settings file: " << mFilename << endl;
+            app::console() << "failed to load XML settings file: " << mFilePath.generic_string() << endl;
             return;
         }
         
-        list<XmlTree> settings = mXmlAsset.getChild("/settings").getChildren();
-        
-        for(list<XmlTree>::iterator nodeIt = settings.begin(); nodeIt != settings.end(); ++nodeIt)
-            parseNode( *nodeIt );
+        for( XmlTree::ConstIter item = mXmlAsset.begin( "/settings" ); item != mXmlAsset.end(); ++item )
+            parseNode( *item );
 
-        app::console() << "XML settings loaded from: " << mFilename << endl;
+        app::console() << "XML settings loaded from: " << mFilePath.generic_string() << endl;
     };
     
     
-    void XmlSettings::save( string filename )
-    {	
-        if ( filename == "" )
-            filename = app::getAppPath().parent_path().generic_string() + "/appSettings.xml";
-        
-        mFilename = filename;
-        
+    void XmlSettings::save( fs::path filePath )
+    {	        
         mXmlAsset = XmlTree("settings", "");
         
         for(int k=0; k < mParams.size(); k++)
             mXmlAsset.push_back( mParams[k]->getXmlNode() );
         
-        mXmlAsset.write( writeFile( mFilename ) );
+        mXmlAsset.write( writeFile( filePath ) );
         
-        app::console() << "XML settings saved: " << mFilename << endl;
+        app::console() << "XML settings saved: " << mFilePath.generic_string() << endl;
         
     };
     
