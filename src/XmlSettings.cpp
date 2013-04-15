@@ -27,10 +27,12 @@ namespace nocte {
     {
         mFilePath               = filePath;
         XmlSettings::thisPtr    = this;
+
+        load( mFilePath );
     };
 
     void XmlSettings::parseNode( XmlTree node )
-    {
+    {        
         string tag          = node.getTag();
         string name         = node.getAttributeValue<string>("name");
         bool paramFound		= false;
@@ -160,16 +162,16 @@ namespace nocte {
         }
         
         try {
-            mXmlAsset = XmlTree( loadFile( mFilePath ) );
+            mXmlAsset = XmlTree( loadFile( mFilePath ) ).getChild( "/settings" );
         }
         catch ( ... ) {
             app::console() << "failed to load XML settings file: " << mFilePath.generic_string() << endl;
             return;
         }
         
-        for( XmlTree::ConstIter item = mXmlAsset.begin( "/settings" ); item != mXmlAsset.end(); ++item )
+        for( XmlTree::ConstIter item = mXmlAsset.begin(); item != mXmlAsset.end(); ++item )
             parseNode( *item );
-
+        
         app::console() << "XML settings loaded from: " << mFilePath.generic_string() << endl;
     };
     
