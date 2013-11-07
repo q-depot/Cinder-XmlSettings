@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings>
+	<float name="mTestFloat" value="0"/>
+	<double name="mTestDouble" value="0"/>
+	<bool name="mTestBool" value="0"/>
+	<Vec2f name="mTestVec2f" x="0" y="0"/>
+	<Vec3f name="mTestVec3f" x="0" y="0" z="0"/>
+	<Color name="mTestColor" r="0" g="0" b="0"/>
+	<ColorA name="mTestColorA" r="0" g="0" b="0" a="1"/>
+	<string name="mTestString" value="zero"/>
+	<int name="mTestInt32" value="333"/>
+</settings>
