@@ -33,9 +33,9 @@ namespace nocte {
 
     void XmlSettings::parseNode( XmlTree node )
     {        
-        string tag          = node.getTag();
-        string name         = node.getAttributeValue<string>("name");
-        bool paramFound		= false;
+        string  tag         = node.getTag();
+        string  name        = node.getAttributeValue<string>("name");
+        bool    paramFound	= false;
         
         for( int k=0; k < mParams.size(); k++)
         {				
@@ -170,8 +170,9 @@ namespace nocte {
         }
         
         for( XmlTree::ConstIter item = mXmlAsset.begin(); item != mXmlAsset.end(); ++item )
+        {
             parseNode( *item );
-        
+        }
         app::console() << "XML settings loaded from: " << mFilePath.generic_string() << endl;
     };
     
