@@ -157,7 +157,7 @@ namespace nocte {
         
         if ( mFilePath.empty() )
         {
-            app::console() << "cannot load XML settings, specify filename" << endl;
+            app::console() << "cannot load XML Settings, specify filename" << endl;
             return;
         }
         
