@@ -1,10 +1,11 @@
 /*
  *  XmlSettings.cpp
- *  XmlSettings
  *
- *  Created by Andrea Cuius on 26/11/2011.
- *  Nocte Studio Copyright 2011 . All rights reserved.
- *	www.nocte.co.uk
+ *  Created by Andrea Cuius
+ *  The MIT License (MIT)
+ *  Copyright (c) 2014 Nocte Studio Ltd.
+ *
+ *  www.nocte.co.uk
  *
  */
 

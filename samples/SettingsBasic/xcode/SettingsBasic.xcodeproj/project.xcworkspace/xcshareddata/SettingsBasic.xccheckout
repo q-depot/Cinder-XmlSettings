@@ -5,7 +5,7 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>2F977C4A-63DE-46CA-BD45-6C261813A5A4</string>
+	<string>8D539277-46A4-4D12-8A5C-2B0B1D0F7489</string>
 	<key>IDESourceControlProjectName</key>
 	<string>SettingsBasic</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
@@ -21,7 +21,7 @@
 		<string>../../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/q-depot/XmlSettings.git</string>
+	<string>git://github.com/cinder/Cinder.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>

@@ -1,14 +1,13 @@
-
 /*
  *  SettingsBasicApp.cpp
- *  XmlSettings
  *
- *  Created by Andrea Cuius.
- *  Nocte Studio Copyright 2013 . All rights reserved.
- *	www.nocte.co.uk
+ *  Created by Andrea Cuius
+ *  The MIT License (MIT)
+ *  Copyright (c) 2014 Nocte Studio Ltd.
+ *
+ *  www.nocte.co.uk
  *
  */
-
 
 #include "cinder/app/AppNative.h"
 #include "cinder/gl/gl.h"
