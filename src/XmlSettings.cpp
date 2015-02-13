@@ -53,11 +53,11 @@ namespace nocte {
                 else if ( tag == "double" )
                     mParams[k]->setValue<double>( node.getAttributeValue<double>("value") );
 
-                else if ( tag == "Vec2f" )
-                    mParams[k]->setValue<Vec2f>( Vec2f( node.getAttributeValue<float>("x"), node.getAttributeValue<float>("y") ) );
+                else if ( tag == "vec2" )
+                    mParams[k]->setValue<vec2>( vec2( node.getAttributeValue<float>("x"), node.getAttributeValue<float>("y") ) );
                 
-                else if ( tag == "Vec3f" )
-                    mParams[k]->setValue<Vec3f>( Vec3f( node.getAttributeValue<float>("x"), node.getAttributeValue<float>("y"), node.getAttributeValue<float>("z") ) );
+                else if ( tag == "vec3" )
+                    mParams[k]->setValue<vec3>( vec3( node.getAttributeValue<float>("x"), node.getAttributeValue<float>("y"), node.getAttributeValue<float>("z") ) );
                 
                 else if ( tag == "bool" )
                     mParams[k]->setValue<bool>( node.getAttributeValue<bool>("value") );
@@ -86,11 +86,11 @@ namespace nocte {
             else if ( tag == "double" )
                 addParam( name, new double(node.getAttributeValue<double>("value")) );
             
-            else if ( tag == "Vec2f" )
-                addParam( name, new Vec2f( node.getAttributeValue<float>("x"), node.getAttributeValue<float>("y") ) );
+            else if ( tag == "vec2" )
+                addParam( name, new vec2( node.getAttributeValue<float>("x"), node.getAttributeValue<float>("y") ) );
             
-            else if ( tag == "Vec3f" )
-                addParam( name, new Vec3f( node.getAttributeValue<float>("x"), node.getAttributeValue<float>("y"), node.getAttributeValue<float>("z") ) );
+            else if ( tag == "vec3" )
+                addParam( name, new vec3( node.getAttributeValue<float>("x"), node.getAttributeValue<float>("y"), node.getAttributeValue<float>("z") ) );
             
             else if ( tag == "bool" )
                 addParam( name, new bool(node.getAttributeValue<bool>("value")) );
@@ -188,7 +188,6 @@ namespace nocte {
         mXmlAsset.write( writeFile( filePath ) );
         
         app::console() << "XML settings saved: " << mFilePath.generic_string() << endl;
-        
     };
     
 

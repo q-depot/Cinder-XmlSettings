@@ -32,8 +32,8 @@ namespace nocte {
 		"float", 
 		"double", 
 		"bool", 
-		"Vec2f", 
-		"Vec3f", 
+		"vec2", 
+		"vec3", 
 		"Color", 
 		"ColorA", 
 		"Font", 
@@ -52,8 +52,8 @@ namespace nocte {
 			PARAM_FLOAT,
 			PARAM_DOUBLE,
 			PARAM_BOOL,
-			PARAM_VEC2F,
-			PARAM_VEC3F,
+			PARAM_VEC2,
+			PARAM_VEC3,
 			PARAM_COLOR,
 			PARAM_COLORA,
 			PARAM_FONT,
@@ -82,10 +82,10 @@ namespace nocte {
 				return ci::toString(*static_cast<double*>(mParam));
 			else if ( mType == PARAM_BOOL )
 				return ci::toString(*static_cast<bool*>(mParam));
-			else if ( mType == PARAM_VEC2F )
-				return ci::toString(*static_cast<ci::Vec2f*>(mParam));
-			else if ( mType == PARAM_VEC3F )
-				return ci::toString(*static_cast<ci::Vec3f*>(mParam));
+			else if ( mType == PARAM_VEC2 )
+				return ci::toString(*static_cast<ci::vec2*>(mParam));
+			else if ( mType == PARAM_VEC3 )
+				return ci::toString(*static_cast<ci::vec3*>(mParam));
 			else if ( mType == PARAM_COLOR )
 				return ci::toString(*static_cast<ci::Color*>(mParam));
 			else if ( mType == PARAM_COLORA )
@@ -112,16 +112,16 @@ namespace nocte {
 				node.setAttribute( "value", *static_cast<double*>(mParam) );
 			else if ( mType == PARAM_BOOL )
 				node.setAttribute( "value", *static_cast<bool*>(mParam) );
-			else if ( mType == PARAM_VEC2F )
+			else if ( mType == PARAM_VEC2 )
 			{
-				node.setAttribute( "x", static_cast<ci::Vec2f*>(mParam)->x );
-				node.setAttribute( "y", static_cast<ci::Vec2f*>(mParam)->y );
+				node.setAttribute( "x", static_cast<ci::vec2*>(mParam)->x );
+				node.setAttribute( "y", static_cast<ci::vec2*>(mParam)->y );
 			}
-			else if ( mType == PARAM_VEC3F )
+			else if ( mType == PARAM_VEC3 )
 			{
-				node.setAttribute( "x", static_cast<ci::Vec3f*>(mParam)->x );
-				node.setAttribute( "y", static_cast<ci::Vec3f*>(mParam)->y );
-				node.setAttribute( "z", static_cast<ci::Vec3f*>(mParam)->z );
+				node.setAttribute( "x", static_cast<ci::vec3*>(mParam)->x );
+				node.setAttribute( "y", static_cast<ci::vec3*>(mParam)->y );
+				node.setAttribute( "z", static_cast<ci::vec3*>(mParam)->z );
 			}
 			else if ( mType == PARAM_COLOR )
 			{
@@ -176,8 +176,8 @@ namespace nocte {
 		void	addParam( const std::string &name, float *param )		{ addOrBind(name, param, Param::PARAM_FLOAT); };
 		void	addParam( const std::string &name, double *param )		{ addOrBind(name, param, Param::PARAM_DOUBLE); };
 		void	addParam( const std::string &name, bool *param )		{ addOrBind(name, param, Param::PARAM_BOOL); };
-		void	addParam( const std::string &name, ci::Vec2f *param )	{ addOrBind(name, param, Param::PARAM_VEC2F); };
-		void	addParam( const std::string &name, ci::Vec3f *param )	{ addOrBind(name, param, Param::PARAM_VEC3F); };
+		void	addParam( const std::string &name, ci::vec2 *param )	{ addOrBind(name, param, Param::PARAM_VEC2); };
+		void	addParam( const std::string &name, ci::vec3 *param )	{ addOrBind(name, param, Param::PARAM_VEC3); };
 		void	addParam( const std::string &name, ci::Color *param )	{ addOrBind(name, param, Param::PARAM_COLOR); };
 		void	addParam( const std::string &name, ci::ColorA *param )	{ addOrBind(name, param, Param::PARAM_COLORA); };
 		void	addParam( const std::string &name, ci::Font *param )	{ addOrBind(name, param, Param::PARAM_FONT); };
