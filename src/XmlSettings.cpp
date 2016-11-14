@@ -9,7 +9,6 @@
  *
  */
 
-#include "cinder/app/AppBasic.h"
 #include "cinder/Xml.h"
 #include "cinder/Utilities.h"
 
@@ -60,8 +59,10 @@ namespace nocte {
                     mParams[k]->setValue<vec3>( vec3( node.getAttributeValue<float>("x"), node.getAttributeValue<float>("y"), node.getAttributeValue<float>("z") ) );
                 
                 else if ( tag == "bool" )
+                {
+                    console() << "parse bool: " << name << " " << node.getAttributeValue<bool>("value") << endl;
                     mParams[k]->setValue<bool>( node.getAttributeValue<bool>("value") );
-                
+                }
                 else if ( tag == "Color" )
                     mParams[k]->setValue<Color>( Color( node.getAttributeValue<float>("r"), node.getAttributeValue<float>("g"), node.getAttributeValue<float>("b") ) );
                 
