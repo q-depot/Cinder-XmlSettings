@@ -37,8 +37,8 @@ namespace nocte {
         string  name        = node.getAttributeValue<string>("name");
         bool    paramFound	= false;
         
-        for( int k=0; k < mParams.size(); k++)
-        {				
+        for( size_t k=0; k < mParams.size(); k++)
+        {
             if ( mParams[k]->getName() == name )
             {
                 paramFound = true;
@@ -70,7 +70,7 @@ namespace nocte {
                     mParams[k]->setValue<ColorA>( ColorA( node.getAttributeValue<float>("r"), node.getAttributeValue<float>("g"), node.getAttributeValue<float>("b"), node.getAttributeValue<float>("a") ) );
                 
                 else if ( tag == "Font" )
-                    mParams[k]->setValue<Font>( Font( node.getAttributeValue<string>("typeface"), node.getAttributeValue<int>("size") ) );
+                    mParams[k]->setValue<Font>( Font( node.getAttributeValue<string>("typeface"), (float)node.getAttributeValue<int>("size") ) );
                 
                 else if ( tag == "string" )
                     mParams[k]->setValue<string>( node.getAttributeValue<string>("value") );
@@ -113,7 +113,7 @@ namespace nocte {
     
     bool XmlSettings::hasParam(string name)
     {
-        for( int k=0; k < mParams.size(); k++)
+        for( size_t k=0; k < mParams.size(); k++)
             if ( mParams[k]->getName() == name )
                 return true;
         
@@ -123,7 +123,7 @@ namespace nocte {
     
     Param* XmlSettings::getParam(string name) 
     {
-        for( int k=0; k < mParams.size(); k++)
+        for( size_t k=0; k < mParams.size(); k++)
             if ( mParams[k]->getName() == name )
                 return mParams[k];
         
@@ -183,7 +183,7 @@ namespace nocte {
     {	        
         mXmlAsset = XmlTree("settings", "");
         
-        for(int k=0; k < mParams.size(); k++)
+        for( size_t k=0; k < mParams.size(); k++ )
             mXmlAsset.push_back( mParams[k]->getXmlNode() );
         
         mXmlAsset.write( writeFile( filePath ) );
